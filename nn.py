@@ -34,8 +34,9 @@ class Layer:
 
 class NeuralNetwork:
     """A series of connected, compatible layers."""
-    def __init__(self, layers):
+    def __init__(self, layers, loss):
         self._layers = layers
+        self._loss_function = loss
 
         # Check layer compatibility
         for (from_, to_) in zip(self._layers[:-1], self._layers[1:]):
@@ -47,6 +48,9 @@ class NeuralNetwork:
         for layer in self._layers:
             out = layer.forward_pass(out)
         return out
+
+    def loss(self, values, expected):
+        return self._loss_function(values, expected)
 
 
 if __name__ == "__main__":
