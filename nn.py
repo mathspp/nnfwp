@@ -95,11 +95,14 @@ class NeuralNetwork:
 if __name__ == "__main__":
     """Demo of a network as a series of layers."""
     net = NeuralNetwork([
-        Layer(2, 4, leaky_relu),
-        Layer(4, 4, leaky_relu),
-        Layer(4, 1, leaky_relu),
-    ])
+        Layer(2, 4, LeakyReLU()),
+        Layer(4, 4, LeakyReLU()),
+        Layer(4, 1, LeakyReLU()),
+    ], MSELoss())
 
     x = np.random.uniform(size=(2, 1))
+    print("Input is:", x)
     output = net.forward_pass(x)
-    print(output)
+    print("Output is:", output)
+    # Ensure "expected" output is a column
+    print("Loss is:", net.loss(output, np.array(0, ndmin=2)))
