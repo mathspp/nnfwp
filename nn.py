@@ -73,9 +73,10 @@ class Layer:
 
 class NeuralNetwork:
     """A series of connected, compatible layers."""
-    def __init__(self, layers, loss):
+    def __init__(self, layers, loss_function, learning_rate):
         self._layers = layers
-        self._loss_function = loss
+        self._loss_function = loss_function
+        self.lr = learning_rate
 
         # Check layer compatibility
         for (from_, to_) in zip(self._layers[:-1], self._layers[1:]):
@@ -107,8 +108,8 @@ class NeuralNetwork:
             dx = np.dot(layer._W.T, db)
             dW = np.dot(db, x.T)
             # Update parameters.
-            layer._W -= 0.001 * dW
-            layer._b -= 0.001 * db
+            layer._W -= self.lr * dW
+            layer._b -= self.lr * db
 
 
 if __name__ == "__main__":
@@ -117,7 +118,7 @@ if __name__ == "__main__":
         Layer(2, 4, LeakyReLU()),
         Layer(4, 4, LeakyReLU()),
         Layer(4, 1, LeakyReLU()),
-    ], MSELoss())
+    ], MSELoss(), 0.001)
 
     x = np.random.uniform(size=(2, 1))
     print("Input is:", x)
