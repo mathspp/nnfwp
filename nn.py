@@ -28,6 +28,23 @@ class Layer:
         return self.act_function(np.dot(self._W, x) + self._b)
 
 
+class NeuralNetwork:
+    """A series of connected, compatible layers."""
+    def __init__(self, layers):
+        self._layers = layers
+
+        # Check layer compatibility
+        for (from_, to_) in zip(self._layers[:-1], self._layers[1:]):
+            if from_.outs != to_.ins:
+                raise ValueError("Layers should have compatible shapes.")
+
+    def forward_pass(self, x):
+        out = x
+        for layer in self._layers:
+            out = layer.forward_pass(out)
+        return out
+
+
 if __name__ == "__main__":
     """Demo of chaining layers with compatible shapes."""
     l1 = Layer(2, 4, leaky_relu)
