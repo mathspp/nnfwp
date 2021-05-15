@@ -62,6 +62,15 @@ class MSELoss(LossFunction):
     def dloss(self, values, expected):
         return 2*(values - expected)/values.size
 
+class CrossEntropyLoss(LossFunction):
+    def loss(self, values, target_class):
+        return -values[target_class, 0] + np.log(np.sum(np.exp(values)))
+
+    def dloss(self, values, target_class):
+        d = np.exp(values)/np.sum(np.exp(values))
+        d[target_class, 0] -= 1
+        return d
+
 
 class Layer:
     """Model the connections between two sets of neurons in a network."""
