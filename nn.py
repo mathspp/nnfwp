@@ -12,6 +12,10 @@ def leaky_relu(x, leaky_param = 0.1):
     """Leaky Rectified Linear Unit with default parameter."""
     return np.maximum(x, x*leaky_param)
 
+def mean_squared_error(values, expected):
+    """Mean squared error between two arrays."""
+    return np.mean((values - expected)**2)
+
 
 class Layer:
     """Model the connections between two sets of neurons in a network."""
