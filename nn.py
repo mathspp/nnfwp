@@ -23,13 +23,16 @@ class ActivationFunction:
         """Derivative of the function with respect to its input."""
         pass
 
-def leaky_relu(x, leaky_param = 0.1):
-    """Leaky Rectified Linear Unit with default parameter."""
-    return np.maximum(x, x*leaky_param)
+class LeakyReLU(ActivationFunction):
+    """Leaky Rectified Linear Unit."""
+    def __init__(self, leaky_param=0.1):
+        self.alpha = leaky_param
 
-def d_leaky_relu(x, leaky_param=0.1):
-    """Derivative of the Leaky ReLU function."""
-    return np.maximum(x > 0, leaky_param)
+    def f(self, x):
+        return np.maximum(x, x*self.alpha)
+
+    def df(self, x):
+        return np.maximum(x > 0, self.alpha)
 
 def mean_squared_error(values, expected):
     """Mean squared error between two arrays."""
