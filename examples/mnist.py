@@ -36,6 +36,24 @@ def test(net, test_data):
             correct += 1
 
     return correct/test_data.shape[0]
+
+def train(net, train_data):
+    # Precompute all target vectors.
+    ts = {}
+    for t in range(10):
+        tv = np.zeros((10, 1))
+        tv[t] = 1
+        ts[t] = tv
+
+    for i, train_row in enumerate(train_data):
+        if not i%1000:
+            print(i)
+
+        t = ts[train_row[0]]
+        x = to_col(train_row[1:])
+        net.train(x, t)
+
+
 if __name__ == "__main__":
     layers = [
         Layer(784, 16, LeakyReLU()),
