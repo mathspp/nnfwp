@@ -63,6 +63,7 @@ class MSELoss(LossFunction):
         return 2*(values - expected)/values.size
 
 class CrossEntropyLoss(LossFunction):
+    """Cross entropy loss function following the pytorch docs."""
     def loss(self, values, target_class):
         return -values[target_class, 0] + np.log(np.sum(np.exp(values)))
 
