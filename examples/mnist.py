@@ -6,6 +6,7 @@ import csv
 import numpy as np
 from nn import NeuralNetwork, Layer, LeakyReLU, MSELoss
 
+TRAIN_FILE = pathlib.Path(__file__).parent / "mnistdata/mnist_train.csv"
 TEST_FILE = pathlib.Path(__file__).parent / "mnistdata/mnist_test.csv"
 
 def load_data(filepath, delimiter=",", dtype=float):
@@ -65,3 +66,9 @@ if __name__ == "__main__":
     test_data = load_data(TEST_FILE, delimiter=",", dtype=int)
     accuracy = test(net, test_data)
     print(f"Accuracy is {100*accuracy:.2f}%")     # Expected to be around 10%
+
+    train_data = load_data(TRAIN_FILE, delimiter=",", dtype=int)
+    train(net, train_data)
+
+    accuracy = test(net, test_data)
+    print(f"Accuracy is {100*accuracy:.2f}%")
