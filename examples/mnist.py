@@ -16,6 +16,24 @@ def load_data(filepath, delimiter=",", dtype=float):
     data = np.asarray(data_list, dtype=dtype)
     print("Done.")
     return data
+
+def to_col(x):
+    return x.reshape((x.size, 1))
+
+def test(net, test_data):
+    correct = 0
+    for i, test_row in enumerate(test_data):
+        if not i%1000:
+            print(i)
+
+        t = test_row[0]
+        x = to_col(test_row[1:])
+        out = net.forward_pass(x)
+        guess = np.argmax(out)
+        if t == guess:
+            correct += 1
+
+    return correct/test_data.shape[0]
 if __name__ == "__main__":
     layers = [
         Layer(784, 16, LeakyReLU()),
