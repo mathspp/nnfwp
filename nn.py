@@ -46,11 +46,13 @@ class NeuralNetwork:
 
 
 if __name__ == "__main__":
-    """Demo of chaining layers with compatible shapes."""
-    l1 = Layer(2, 4, leaky_relu)
-    l2 = Layer(4, 4, leaky_relu)
-    l3 = Layer(4, 1, leaky_relu)
+    """Demo of a network as a series of layers."""
+    net = NeuralNetwork([
+        Layer(2, 4, leaky_relu),
+        Layer(4, 4, leaky_relu),
+        Layer(4, 1, leaky_relu),
+    ])
 
     x = np.random.uniform(size=(2, 1))
-    output = l3.forward_pass(l2.forward_pass(l1.forward_pass(x)))
+    output = net.forward_pass(x)
     print(output)
