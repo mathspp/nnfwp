@@ -56,12 +56,37 @@ def train(net, train_data):
 
 
 if __name__ == "__main__":
+    # First configuration we tried.
     layers = [
         Layer(784, 16, LeakyReLU()),
         Layer(16, 16, LeakyReLU()),
         Layer(16, 10, LeakyReLU()),
     ]
     net = NeuralNetwork(layers, MSELoss(), 0.001)
+
+    # # Use a Sigmoid as the final layer (don't forget to import it!)
+    # layers = [
+    #     Layer(784, 16, LeakyReLU()),
+    #     Layer(16, 16, LeakyReLU()),
+    #     Layer(16, 10, Sigmoid()),
+    # ]
+    # net = NeuralNetwork(layers, MSELoss(), 0.001)
+
+    # # Use Sigmoid at the end and CrossEntropyLoss (import them!)
+    # layers = [
+    #     Layer(784, 16, LeakyReLU()),
+    #     Layer(16, 16, LeakyReLU()),
+    #     Layer(16, 10, Sigmoid()),
+    # ]
+    # net = NeuralNetwork(layers, CrossEntropyLoss(), 0.001)
+
+    # # Only LeakyReLU's and the CrossEntropyLoss (import the loss!)
+    # layers = [
+    #     Layer(784, 16, LeakyReLU()),
+    #     Layer(16, 16, LeakyReLU()),
+    #     Layer(16, 10, Sigmoid()),
+    # ]
+    # net = NeuralNetwork(layers, CrossEntropyLoss(), 0.001)
 
     test_data = load_data(TEST_FILE, delimiter=",", dtype=int)
     accuracy = test(net, test_data)
