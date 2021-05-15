@@ -68,7 +68,7 @@ class Layer:
 
     def forward_pass(self, x):
         """Compute the next set of neuron states with the given set of states."""
-        return self.act_function(np.dot(self._W, x) + self._b)
+        return self.act_function.f(np.dot(self._W, x) + self._b)
 
 
 class NeuralNetwork:
@@ -89,7 +89,7 @@ class NeuralNetwork:
         return out
 
     def loss(self, values, expected):
-        return self._loss_function(values, expected)
+        return self._loss_function.loss(values, expected)
 
 
 if __name__ == "__main__":
