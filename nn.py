@@ -34,13 +34,26 @@ class LeakyReLU(ActivationFunction):
     def df(self, x):
         return np.maximum(x > 0, self.alpha)
 
-def mean_squared_error(values, expected):
-    """Mean squared error between two arrays."""
-    return np.mean((values - expected)**2)
 
-def d_mean_squared_error(values, expected):
-    """Derivative of the mean squared error with respect to the computed values."""
-    return 2*(values - expected)/values.size
+class LossFunction:
+    """Class to be inherited by loss functions."""
+    @abstractmethod
+    def loss(self, values, expected):
+        """Compute the loss of the computed values with respect to the expected ones."""
+        pass
+
+    @abstractmethod
+    def dloss(self, values, expected):
+        """Derivative of the loss with respect to the computed values."""
+        pass
+
+class MSELoss(LossFunction):
+    """Mean Squared Error Loss function."""
+    def loss(self, values, expected):
+        return np.mean((values - expected)**2)
+
+    def dloss(self, values, expected):
+        return 2*(values - expected)/values.size
 
 
 class Layer:
