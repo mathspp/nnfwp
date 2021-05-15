@@ -117,12 +117,21 @@ if __name__ == "__main__":
     net = NeuralNetwork([
         Layer(2, 4, LeakyReLU()),
         Layer(4, 4, LeakyReLU()),
-        Layer(4, 1, LeakyReLU()),
+        Layer(4, 3, LeakyReLU()),
     ], MSELoss(), 0.001)
+    t = np.zeros(shape=(3,1))
 
-    x = np.random.uniform(size=(2, 1))
-    print("Input is:", x)
-    output = net.forward_pass(x)
-    print("Output is:", output)
-    # Ensure "expected" output is a column
-    print("Loss is:", net.loss(output, np.array(0, ndmin=2)))
+    loss = 0
+    for _ in range(100):
+        x = np.random.normal(size=(2,1))
+        loss += net.loss(net.forward_pass(x)[-1], t)
+    print(loss)
+
+    for _ in range(10000):
+        net.train(np.random.normal(size=(2,1)), t)
+
+    loss = 0
+    for _ in range(100):
+        x = np.random.normal(size=(2,1))
+        loss += net.loss(net.forward_pass(x)[-1], t)
+    print(loss)
