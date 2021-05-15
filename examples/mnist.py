@@ -6,6 +6,8 @@ import csv
 import numpy as np
 from nn import NeuralNetwork, Layer, LeakyReLU, MSELoss
 
+TEST_FILE = pathlib.Path(__file__).parent / "mnistdata/mnist_test.csv"
+
 def load_data(filepath, delimiter=",", dtype=float):
     """Load a numerical numpy array from a file."""
 
@@ -41,3 +43,7 @@ if __name__ == "__main__":
         Layer(16, 10, LeakyReLU()),
     ]
     net = NeuralNetwork(layers, MSELoss(), 0.001)
+
+    test_data = load_data(TEST_FILE, delimiter=",", dtype=int)
+    accuracy = test(net, test_data)
+    print(f"Accuracy is {100*accuracy:.2f}%")     # Expected to be around 10%
