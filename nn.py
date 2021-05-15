@@ -91,6 +91,25 @@ class NeuralNetwork:
     def loss(self, values, expected):
         return self._loss_function.loss(values, expected)
 
+    def train(self, x, t):
+        """Train the network on input x and expected output t."""
+
+        # Accumulate intermediate results during forward pass.
+        xs = [x]
+        for layer in self._layers:
+            xs.append(layer.forward_pass(xs[-1]))
+
+        dx = self._loss_function.dloss(xs.pop(), t)
+        for layer, x in zip(self._layers[::-1], xs[::-1]):
+            # Compute the derivatives
+            y = np.dot(layer._W, x) + layer._b
+            db = layer.act_function.df(y) * dx
+            dx = np.dot(layer._W.T, db)
+            dW = np.dot(db, x.T)
+            # Update parameters.
+            layer._W -= 0.001 * dW
+            layer._b -= 0.001 * db
+
 
 if __name__ == "__main__":
     """Demo of a network as a series of layers."""
