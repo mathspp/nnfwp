@@ -34,6 +34,13 @@ class LeakyReLU(ActivationFunction):
     def df(self, x):
         return np.maximum(x > 0, self.alpha)
 
+class Sigmoid(ActivationFunction):
+    def f(self, x):
+        return 1/(1 + np.exp(-x))
+
+    def df(self, x):
+        return self.f(x) * (1 - self.f(x))
+
 
 class LossFunction:
     """Class to be inherited by loss functions."""
