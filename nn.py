@@ -21,3 +21,14 @@ class Layer:
 
     def forward_pass(self, x):
         return self.act_function(np.dot(self._W, x) + self._b)
+
+
+if __name__ == "__main__":
+    """Demo of chaining layers with compatible shapes."""
+    l1 = Layer(2, 4, leaky_relu)
+    l2 = Layer(4, 4, leaky_relu)
+    l3 = Layer(4, 1, leaky_relu)
+
+    x = np.random.uniform(size=(2, 1))
+    output = l3.forward_pass(l2.forward_pass(l1.forward_pass(x)))
+    print(output)
