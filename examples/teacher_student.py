@@ -52,7 +52,7 @@ if __name__ == "__main__":
         Layer(16, 16, LeakyReLU()),
         Layer(16, 10, LeakyReLU()),
     ]
-    teacher = NeuralNetwork(layers, CrossEntropyLoss(), 0.001)
+    teacher = NeuralNetwork(layers, CrossEntropyLoss(), 0.01)
 
     test_data = load_data(TEST_FILE, delimiter=",", dtype=int)
     accuracy = test(teacher, test_data)
