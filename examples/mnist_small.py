@@ -30,7 +30,7 @@ def test(net, test_data):
             print(i)
 
         t = test_row[0]
-        x = to_col(test_row[1:])
+        x = to_col(test_row[1:])/255
         out = net.forward_pass(x)
         guess = np.argmax(out)
         if t == guess:
@@ -43,7 +43,7 @@ def train(net, train_data):
         if not i%1000:
             print(i)
 
-        net.train(to_col(train_row[1:]), train_row[0])
+        net.train(to_col(train_row[1:])/255, train_row[0])
 
 
 if __name__ == "__main__":
