@@ -4,7 +4,7 @@ sys.path.append(str(pathlib.Path(__file__).parent.parent))
 
 import csv
 import numpy as np
-from nn import NeuralNetwork, Layer, LeakyReLU, CrossEntropyLoss
+from nn import NeuralNetwork, Layer, LeakyReLU, CrossEntropyLoss, MSELoss
 
 TRAIN_FILE = pathlib.Path(__file__).parent / "mnistdata/mnist_train.csv"
 TEST_FILE = pathlib.Path(__file__).parent / "mnistdata/mnist_test.csv"
@@ -45,6 +45,16 @@ def train(net, train_data):
 
         net.train(to_col(train_row[1:])/255, train_row[0])
 
+def train_students(teacher, students, train_data):
+    for i, train_row in enumerate(train_data):
+        if not i%1000:
+            print(i)
+
+        x = to_col(train_row[1:])/255
+        out = teacher.forward_pass(x)
+        for student in students:
+            student.train(x, out)
+
 
 if __name__ == "__main__":
     layers = [
@@ -52,7 +62,15 @@ if __name__ == "__main__":
         Layer(16, 16, LeakyReLU()),
         Layer(16, 10, LeakyReLU()),
     ]
-    teacher = NeuralNetwork(layers, CrossEntropyLoss(), 0.01)
+    teacher = NeuralNetwork(layers, CrossEntropyLoss(), 0.03)
+    students = [
+        NeuralNetwork([Layer(784, 10, LeakyReLU())], MSELoss(), 0.001),
+        NeuralNetwork([Layer(784, 10, LeakyReLU())], MSELoss(), 0.003),
+        NeuralNetwork([Layer(784, 10, LeakyReLU())], MSELoss(), 0.01),
+        NeuralNetwork([Layer(784, 10, LeakyReLU())], MSELoss(), 0.03),
+        NeuralNetwork([Layer(784, 10, LeakyReLU())], MSELoss(), 0.1),
+        NeuralNetwork([Layer(784, 10, LeakyReLU())], MSELoss(), 0.3),
+    ]
 
     test_data = load_data(TEST_FILE, delimiter=",", dtype=int)
     accuracy = test(teacher, test_data)
@@ -63,3 +81,10 @@ if __name__ == "__main__":
 
     accuracy = test(teacher, test_data)
     print(f"Accuracy is {100*accuracy:.2f}%")
+
+    print("Training students.")
+    train_students(teacher, students, train_data)
+    print("Testing students.")
+    accuracies = [100*test(student, test_data) for student in students]
+    print(accuracies)
+    print(f"Teacher accuracy had been {100*accuracy:.2f}%")
