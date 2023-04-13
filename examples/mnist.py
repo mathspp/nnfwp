@@ -42,7 +42,7 @@ def train(net, train_data):
     # Precompute all target vectors.
     ts = {}
     for t in range(10):
-        tv = np.zeros((10, 1))
+        tv = np.zeros((10, 1), dtype=int)
         tv[t] = 1
         ts[t] = tv
 

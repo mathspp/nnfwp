@@ -136,19 +136,19 @@ if __name__ == "__main__":
         Layer(4, 4, LeakyReLU()),
         Layer(4, 3, LeakyReLU()),
     ], MSELoss(), 0.001)
-    t = np.zeros(shape=(3,1))
+    t = np.zeros(shape=(3, 1))
 
     loss = 0
     for _ in range(100):
-        x = np.random.normal(size=(2,1))
-        loss += net.loss(net.forward_pass(x)[-1], t)
+        x = np.random.normal(size=(2, 1))
+        loss += net.loss(net.forward_pass(x), t)
     print(loss)
 
     for _ in range(10000):
-        net.train(np.random.normal(size=(2,1)), t)
+        net.train(np.random.normal(size=(2, 1)), t)
 
     loss = 0
     for _ in range(100):
-        x = np.random.normal(size=(2,1))
-        loss += net.loss(net.forward_pass(x)[-1], t)
+        x = np.random.normal(size=(2, 1))
+        loss += net.loss(net.forward_pass(x), t)
     print(loss)
